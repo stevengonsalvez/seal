@@ -62,7 +62,7 @@ class MessageBuilder
   end
 
   def no_pull_requests
-    "Aloha team! It's a beautiful day! :happyseal: :happyseal: :happyseal:\n\nNo pull requests to review today! :rainbow: :sunny: :metal: :tada:"
+    "Aloha team! It's a beautiful day! :happydance: :happydance: :happydance: \n\nNo pull requests to review today! :rainbow: :sunny: :metal: :tada:"
   end
 
   def bark_about_quotes

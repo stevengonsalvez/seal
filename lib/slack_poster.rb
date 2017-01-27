@@ -3,6 +3,7 @@ require 'slack-poster'
 class SlackPoster
 
   attr_accessor :webhook_url, :poster, :mood, :mood_hash, :channel, :season_name, :halloween_season, :festive_season
+  APP_CONFIG = YAML.load_file('./config/application.yml')
 
   def initialize(webhook_url, team_channel, mood)
     @webhook_url = webhook_url
@@ -50,19 +51,19 @@ class SlackPoster
 
   def assign_poster_settings
     if @mood == "informative"
-      @mood_hash[:icon_emoji]= ":#{@season_symbol}informative_seal:"
+      @mood_hash[:icon_emoji]= ":information_source: "
       @mood_hash[:username]= "#{@season_name}Informative Seal"
     elsif @mood == "approval"
       @mood_hash[:icon_emoji]= ":#{@season_symbol}seal_of_approval:"
       @mood_hash[:username]= "#{@season_name}Seal of Approval"
     elsif @mood == "angry"
-      @mood_hash[:icon_emoji]= ":#{@season_symbol}angrier_seal:"
+      @mood_hash[:icon_emoji]= ":frowning:"
       @mood_hash[:username]= "#{@season_name}Angry Seal"
     elsif @mood == "tea"
-      @mood_hash[:icon_emoji]= ":manatea:"
+      @mood_hash[:icon_emoji]= ":tea:"
       @mood_hash[:username]= "Tea Seal"
     elsif @mood == "charter"
-      @mood_hash[:icon_emoji]= ":happyseal:"
+      @mood_hash[:icon_emoji]= ":happydance:"
       @mood_hash[:username]= "Team Charter Seal"
     else
       fail "Bad mood: #{mood}."
@@ -105,6 +106,11 @@ class SlackPoster
   end
 
   def channel
-    @team_channel = '#angry-seal-bot-test' if ENV["DYNO"].nil?
+    @team_channel = if ENV['HOSTNAME']
+      ENV['SLACK_CHANNEL']
+    else
+      puts "\n\n Defaulting channel to: #pr-notifications-dev \n\n"
+      "#pr-notifications-dev"
+    end
   end
 end

@@ -1,0 +1,54 @@
+developers:
+  members:
+    - davidpatters0n
+    - adammeghji
+    - andrewdamelio
+    - arthurchayka
+    - chainlink
+    - connerfritz
+    - frozenbe
+    - jdjkelly
+    - kieran
+    - kylebuckle
+    - laurencohl
+    - marissagordon
+    - mlatham
+    - omouse
+    - suhaildawood
+    - swaby
+    - szum
+    - zlwaterfield
+
+  channel:
+    "#pr-notifications-dev"
+
+  exclude_titles:
+    - "[DO NOT MERGE]"
+    - "Don't merge"
+    - DO NOT MERGE
+    - "Waiting on factcheck"
+
+  exclude_labels:
+    - "[DO NOT MERGE]"
+    - "Don't merge"
+    - DO NOT MERGE
+    - "Waiting on factcheck"
+
+  exclude_repos:
+    #- not in use
+
+  include_repos:
+    - "web"
+    - "boxoffice"
+    - "multiverse"
+    - "juno"
+    - "embed"
+    - "ios"
+    - "android"
+    - "kepler"
+    - "terraform"
+    - "admin"
+    - "calendar"
+    - "gerald"
+    - "discover"
+

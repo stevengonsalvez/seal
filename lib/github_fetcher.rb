@@ -1,5 +1,4 @@
 require 'octokit'
-
 class GithubFetcher
   ORGANISATION ||= ENV['SEAL_ORGANISATION']
   # TODO: remove media type when review support comes out of preview
@@ -7,7 +6,7 @@ class GithubFetcher
 
   attr_accessor :people
 
-  def initialize(team_members_accounts, use_labels, exclude_labels, exclude_titles, exclude_repos)
+  def initialize(team_members_accounts, use_labels, exclude_labels, exclude_titles, exclude_repos, include_repos=nil)
     @github = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
     @github.user.login
     @github.auto_paginate = true
@@ -17,9 +16,11 @@ class GithubFetcher
     @exclude_titles = exclude_titles.map(&:downcase).uniq if exclude_titles
     @labels = {}
     @exclude_repos = exclude_repos
+    @include_repos = include_repos
   end
 
   def list_pull_requests
+    # need to potentially optimise takes a long time with alot of pr's from different repos....
     pull_requests_from_github.each_with_object({}) do |pull_request, pull_requests|
       repo_name = pull_request.html_url.split("/")[4]
       next if hidden?(pull_request, repo_name)
@@ -29,7 +30,7 @@ class GithubFetcher
 
   private
 
-  attr_reader :use_labels, :exclude_labels, :exclude_titles, :exclude_repos
+  attr_reader :use_labels, :exclude_labels, :exclude_titles, :exclude_repos, :include_repos
 
   def present_pull_request(pull_request, repo_name)
     pr = {}
@@ -78,7 +79,7 @@ class GithubFetcher
   end
 
   def hidden?(pull_request, repo)
-    excluded_repo?(repo) ||
+    !included_repo?(repo) ||
       excluded_label?(pull_request, repo) ||
       excluded_title?(pull_request.title) ||
       !person_subscribed?(pull_request)
@@ -97,5 +98,10 @@ class GithubFetcher
   def excluded_repo?(repo)
     return false unless exclude_repos
     exclude_repos.include?(repo)
+  end
+
+  def included_repo?(repo)
+    return false unless include_repos
+    include_repos.include?(repo)
   end
 end

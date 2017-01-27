@@ -1,9 +1,7 @@
 #!/bin/bash
 
-teams=(content-tools
-       core-formats
-       publishing-platform
-       govuk-infrastructure)
+teams=(developers)
+
 
 for team in ${teams[*]} ; do
   ./bin/seal.rb $team quotes
